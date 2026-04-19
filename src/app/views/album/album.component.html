@@ -1,0 +1,142 @@
+<section class="album-page">
+  <div *ngIf="showConfetti" class="confetti-burst">
+    <span class="c green"></span>
+    <span class="c yellow"></span>
+    <span class="c blue"></span>
+    <span class="c yellow"></span>
+    <span class="c green"></span>
+    <span class="c blue"></span>
+    <span class="c yellow"></span>
+    <span class="c green"></span>
+  </div>
+
+  <header class="album-header">
+    <div class="greeting">
+      <app-mascot
+        size="md"
+        [bubble]="mascotBubble"
+        [wag]="true"
+      ></app-mascot>
+      <div class="texts">
+        <h1 class="brand-font">Álbum da Copa 2026</h1>
+        <p>
+          Olá, <strong>{{ user?.name }}</strong>! Clique nas figurinhas para
+          marcar. Clicou 2× = foi pras repetidas.
+        </p>
+      </div>
+    </div>
+
+    <div class="stats" *ngIf="album as a">
+      <div class="stat-card primary">
+        <span class="material-icons">auto_awesome</span>
+        <div>
+          <div class="label">Progresso</div>
+          <div class="value">{{ a.progressPercent }}%</div>
+        </div>
+      </div>
+      <div class="stat-card green">
+        <span class="material-icons">check_circle</span>
+        <div>
+          <div class="label">Coladas</div>
+          <div class="value">{{ a.ownedStickers }} / {{ a.totalStickers }}</div>
+        </div>
+      </div>
+      <div class="stat-card yellow">
+        <span class="material-icons">content_copy</span>
+        <div>
+          <div class="label">Repetidas</div>
+          <div class="value">{{ a.repetidasTotal }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-bar" *ngIf="album as a">
+      <div
+        class="progress-fill"
+        [style.width.%]="a.progressPercent"
+        [@progressIn]
+      ></div>
+      <span class="progress-label">{{ a.progressPercent }}%</span>
+    </div>
+
+    <div class="controls">
+      <label class="search-input">
+        <span class="material-icons">search</span>
+        <input
+          type="text"
+          placeholder="Buscar por código, jogador ou seleção..."
+          [(ngModel)]="search"
+        />
+      </label>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="hideOwned" />
+        <span class="material-icons">visibility_off</span>
+        Só faltantes
+      </label>
+    </div>
+  </header>
+
+  <div class="sections" *ngIf="album as a">
+    <article
+      class="section"
+      *ngFor="let section of filteredSections(); trackBy: trackBySection"
+    >
+      <header class="section-header">
+        <h2 class="brand-font">{{ section.section }}</h2>
+        <span class="count">
+          {{ section.ownedStickers }} / {{ section.totalStickers }}
+        </span>
+      </header>
+
+      <div class="grid">
+        <button
+          *ngFor="let s of section.stickers; trackBy: trackBySticker"
+          class="sticker"
+          [class.owned]="s.owned"
+          [class.has-dup]="s.repetidas > 0"
+          [class.special]="s.isSpecial"
+          [@flash]="pulseMap[s.id] || 0"
+          (click)="onStickerClick(s)"
+          (contextmenu)="onStickerRightClick($event, s)"
+          [title]="
+            s.owned
+              ? 'Você tem! Clique p/ adicionar nas repetidas. Botão direito p/ reduzir.'
+              : 'Clique para marcar como colada.'
+          "
+        >
+          <div class="code">{{ s.code }}</div>
+          <div class="icon-wrap">
+            <span
+              class="material-icons status-icon"
+              *ngIf="s.owned"
+            >
+              check_circle
+            </span>
+            <span
+              class="material-icons placeholder-icon"
+              *ngIf="!s.owned"
+            >
+              sports_soccer
+            </span>
+          </div>
+          <div class="name">
+            <span *ngIf="s.team">{{ s.team }}</span>
+            <span class="muted" *ngIf="s.playerName">{{ s.playerName }}</span>
+          </div>
+          <div class="dup-badge" *ngIf="s.repetidas > 0">
+            +{{ s.repetidas }}
+          </div>
+          <div class="special-ribbon" *ngIf="s.isSpecial">
+            <span class="material-icons">star</span>
+          </div>
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <app-loader
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Montando seu álbum..."
+  ></app-loader>
+</section>

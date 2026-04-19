@@ -1,0 +1,15 @@
+<div class="notification-stack">
+  <div
+    *ngFor="let msg of messages"
+    [@slideIn]
+    class="notification"
+    [class.success]="msg.type === 'success'"
+    [class.error]="msg.type === 'error'"
+    [class.info]="msg.type === 'info'"
+    [class.warning]="msg.type === 'warning'"
+    (click)="dismiss(msg.id)"
+  >
+    <span class="material-icons icon">{{ icon(msg.type) }}</span>
+    <span class="body">{{ msg.message }}</span>
+  </div>
+</div>

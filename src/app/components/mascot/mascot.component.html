@@ -1,0 +1,17 @@
+<div
+  #mascotEl
+  class="mascot"
+  [class.sm]="size === 'sm'"
+  [class.md]="size === 'md'"
+  [class.lg]="size === 'lg'"
+  [class.xl]="size === 'xl'"
+  [@mascotEntry]="state"
+>
+  <div class="dog-wrap" [class.wag]="wag" [class.glow]="glow">
+    <img src="assets/aubum.png" alt="AUbum - mascote" />
+  </div>
+
+  <div *ngIf="bubble" class="speech-bubble" [@bubblePop]>
+    {{ bubble }}
+  </div>
+</div>

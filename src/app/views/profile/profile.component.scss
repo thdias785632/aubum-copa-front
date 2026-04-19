@@ -1,0 +1,88 @@
+.profile-page {
+  padding: 32px clamp(16px, 5vw, 60px) 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 28px;
+  border-radius: 24px;
+  border: 3px solid var(--br-yellow);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+
+  .info {
+    h1 {
+      margin: 0;
+      color: var(--br-blue-dark);
+    }
+
+    p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+    }
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--br-blue), var(--br-blue-dark));
+  color: var(--br-white);
+  box-shadow: var(--shadow-sm);
+
+  .material-icons { font-size: 30px; color: var(--br-yellow); }
+  .label { font-size: 12px; opacity: 0.85; }
+  .value { font-size: 22px; font-weight: 800; }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  .aubum-btn {
+    justify-content: center;
+  }
+
+  .danger {
+    background: #c62828;
+    &:hover {
+      background: #8e0000;
+    }
+  }
+}
+
+.confirm {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 22px;
+  border-radius: 20px;
+  border: 3px dashed #c62828;
+  color: var(--br-blue-dark);
+
+  p {
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}

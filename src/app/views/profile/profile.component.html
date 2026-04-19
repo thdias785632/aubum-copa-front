@@ -1,0 +1,70 @@
+<section class="profile-page">
+  <div class="hero-card">
+    <app-mascot size="lg" [wag]="true" [glow]="true"></app-mascot>
+    <div class="info">
+      <h1 class="brand-font">{{ user?.name }}</h1>
+      <p>{{ user?.email }}</p>
+    </div>
+  </div>
+
+  <div class="stats" *ngIf="album as a">
+    <div class="stat">
+      <span class="material-icons">auto_awesome</span>
+      <div>
+        <div class="label">Progresso</div>
+        <div class="value">{{ a.progressPercent }}%</div>
+      </div>
+    </div>
+    <div class="stat">
+      <span class="material-icons">check_circle</span>
+      <div>
+        <div class="label">Coladas</div>
+        <div class="value">{{ a.ownedStickers }} / {{ a.totalStickers }}</div>
+      </div>
+    </div>
+    <div class="stat">
+      <span class="material-icons">content_copy</span>
+      <div>
+        <div class="label">Repetidas</div>
+        <div class="value">{{ a.repetidasTotal }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="aubum-btn" (click)="logout()">
+      <span class="material-icons">logout</span>
+      Sair da conta
+    </button>
+    <button
+      class="aubum-btn blue danger"
+      (click)="confirmReset()"
+      *ngIf="!confirmingReset"
+    >
+      <span class="material-icons">delete_forever</span>
+      Resetar álbum
+    </button>
+  </div>
+
+  <div class="confirm" *ngIf="confirmingReset">
+    <p>
+      Tem certeza? Isso apaga TODAS as figurinhas coladas e as repetidas.
+    </p>
+    <div class="confirm-actions">
+      <button class="aubum-btn yellow" (click)="cancelReset()">
+        <span class="material-icons">arrow_back</span>
+        Cancelar
+      </button>
+      <button class="aubum-btn blue danger" (click)="resetAlbum()">
+        <span class="material-icons">delete_forever</span>
+        Sim, zerar tudo
+      </button>
+    </div>
+  </div>
+
+  <app-loader
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Carregando seu perfil..."
+  ></app-loader>
+</section>

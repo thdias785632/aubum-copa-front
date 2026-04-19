@@ -1,0 +1,142 @@
+<section class="home" @heroIn>
+  <div class="confetti-layer">
+    <span class="c green"></span>
+    <span class="c yellow"></span>
+    <span class="c blue"></span>
+    <span class="c yellow"></span>
+    <span class="c green"></span>
+    <span class="c blue"></span>
+  </div>
+
+  <div class="hero">
+    <h1 class="hero-title">
+      <span class="letter l1">A</span><span class="letter l2">U</span
+      ><span class="letter l3">b</span><span class="letter l4">u</span
+      ><span class="letter l5">m</span>
+      <span class="subtitle">da Copa 2026</span>
+    </h1>
+    <p class="hero-sub">
+      Seu álbum de figurinhas com o mascote mais fofo do Brasil.
+      <br />
+      Marque o que você tem, veja suas repetidas e complete seu álbum!
+    </p>
+
+    <app-mascot
+      size="xl"
+      [bubble]="currentBubble"
+      [wag]="true"
+      [glow]="true"
+    ></app-mascot>
+  </div>
+
+  <div class="card-wrap">
+    <div class="auth-card" [@cardFlip]="mode">
+      <div class="tabs">
+        <button
+          class="tab"
+          [class.active]="mode === 'login'"
+          (click)="switchMode('login')"
+          type="button"
+        >
+          Entrar
+        </button>
+        <button
+          class="tab"
+          [class.active]="mode === 'signup'"
+          (click)="switchMode('signup')"
+          type="button"
+        >
+          Cadastrar
+        </button>
+      </div>
+
+      <form
+        *ngIf="mode === 'login'"
+        class="form"
+        [formGroup]="loginForm"
+        (ngSubmit)="onLogin()"
+      >
+        <label>
+          <span class="material-icons">alternate_email</span>
+          <input
+            type="email"
+            placeholder="seu@email.com"
+            formControlName="email"
+            autocomplete="email"
+          />
+        </label>
+
+        <label>
+          <span class="material-icons">lock</span>
+          <input
+            type="password"
+            placeholder="senha"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+        </label>
+
+        <button
+          type="submit"
+          class="aubum-btn yellow"
+          [disabled]="loginForm.invalid"
+        >
+          <span class="material-icons">pets</span>
+          Bora colar figurinhas!
+        </button>
+      </form>
+
+      <form
+        *ngIf="mode === 'signup'"
+        class="form"
+        [formGroup]="signupForm"
+        (ngSubmit)="onSignup()"
+      >
+        <label>
+          <span class="material-icons">person</span>
+          <input
+            type="text"
+            placeholder="seu nome"
+            formControlName="name"
+            autocomplete="name"
+          />
+        </label>
+
+        <label>
+          <span class="material-icons">alternate_email</span>
+          <input
+            type="email"
+            placeholder="seu@email.com"
+            formControlName="email"
+            autocomplete="email"
+          />
+        </label>
+
+        <label>
+          <span class="material-icons">lock</span>
+          <input
+            type="password"
+            placeholder="senha (mín. 6)"
+            formControlName="password"
+            autocomplete="new-password"
+          />
+        </label>
+
+        <button
+          type="submit"
+          class="aubum-btn"
+          [disabled]="signupForm.invalid"
+        >
+          <span class="material-icons">celebration</span>
+          Começar meu álbum
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <app-loader
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Aguenta aí... AUbum buscando suas figurinhas!"
+  ></app-loader>
+</section>
