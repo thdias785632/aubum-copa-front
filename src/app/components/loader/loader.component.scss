@@ -1,0 +1,66 @@
+.loader-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+
+  &.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 39, 118, 0.65);
+    backdrop-filter: blur(6px);
+    z-index: 1500;
+  }
+}
+
+.loader-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 40px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  border: 3px solid var(--br-yellow);
+  box-shadow: var(--shadow-lg);
+  min-width: 260px;
+}
+
+.dog-spinner {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--br-green);
+  box-shadow: 0 0 0 4px var(--br-yellow);
+  animation: aubumBounce 1s ease-in-out infinite,
+    aubumGlow 1.4s ease-in-out infinite;
+}
+
+.loader-message {
+  margin: 18px 0 10px;
+  font-weight: 700;
+  color: var(--br-blue-dark);
+}
+
+.loader-dots {
+  display: flex;
+  gap: 6px;
+
+  span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--br-green);
+    animation: aubumBounce 0.9s ease-in-out infinite;
+  }
+
+  span:nth-child(2) {
+    background: var(--br-yellow);
+    animation-delay: 0.12s;
+  }
+
+  span:nth-child(3) {
+    background: var(--br-blue);
+    animation-delay: 0.24s;
+  }
+}

@@ -1,0 +1,45 @@
+.notification-stack {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  min-width: 280px;
+  max-width: 360px;
+  border-radius: 16px;
+  color: var(--br-white);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--br-yellow);
+  cursor: pointer;
+  pointer-events: all;
+
+  .icon {
+    font-size: 26px;
+  }
+
+  &.success {
+    background: linear-gradient(135deg, var(--br-green), var(--br-green-dark));
+  }
+  &.error {
+    background: linear-gradient(135deg, #c62828, #8e0000);
+    border-color: #ffcdd2;
+  }
+  &.info {
+    background: linear-gradient(135deg, var(--br-blue), var(--br-blue-dark));
+  }
+  &.warning {
+    background: linear-gradient(135deg, #f9a825, #f57f17);
+    color: var(--br-blue-dark);
+  }
+}

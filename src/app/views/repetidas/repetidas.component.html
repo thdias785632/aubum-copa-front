@@ -1,0 +1,66 @@
+<section class="repetidas-page">
+  <header class="page-header">
+    <app-mascot size="md" [wag]="true" bubble="Quem quer trocar?"></app-mascot>
+    <div class="texts">
+      <h1 class="brand-font">Minhas Repetidas</h1>
+      <p>
+        Essas são suas figurinhas de sobra. Use pra trocar com os amigos! 🔁
+      </p>
+    </div>
+    <div class="big-counter">
+      <span class="n">{{ totalRepetidas() }}</span>
+      <span class="lbl">repetidas</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <label class="search-input">
+      <span class="material-icons">search</span>
+      <input
+        type="text"
+        placeholder="Buscar por código, jogador, seleção..."
+        [(ngModel)]="search"
+      />
+    </label>
+  </div>
+
+  <div class="empty" *ngIf="!isLoading && filtered().length === 0">
+    <app-mascot size="lg" [wag]="true"></app-mascot>
+    <h3>Nenhuma repetida ainda</h3>
+    <p>
+      Marque as figurinhas que você tem no álbum. Se clicar de novo numa que
+      já tem, ela vem pra cá.
+    </p>
+  </div>
+
+  <div class="rep-grid">
+    <article
+      class="rep-card"
+      *ngFor="let item of filtered(); trackBy: trackBy"
+      [@listIn]
+    >
+      <div class="top">
+        <span class="code">{{ item.code }}</span>
+        <span class="badge">x{{ item.quantity - 1 }}</span>
+      </div>
+      <div class="icon-wrap">
+        <span class="material-icons">sports_soccer</span>
+      </div>
+      <div class="info">
+        <strong *ngIf="item.team">{{ item.team }}</strong>
+        <span *ngIf="item.playerName">{{ item.playerName }}</span>
+        <em>{{ item.section }}</em>
+      </div>
+      <button class="aubum-btn blue" (click)="removeOne(item)">
+        <span class="material-icons">remove</span>
+        Troquei uma
+      </button>
+    </article>
+  </div>
+
+  <app-loader
+    *ngIf="isLoading"
+    [overlay]="true"
+    message="Contando as repetidas..."
+  ></app-loader>
+</section>
