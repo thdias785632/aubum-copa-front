@@ -20,10 +20,9 @@
       <div class="texts">
         <h1 class="brand-font">Álbum da Copa 2026</h1>
         <p>
-          Olá, <strong>{{ user?.name.split(' ')[0] }}</strong>! Toque na figurinha para
-          marcar (ou somar repetidas). Para tirar uma, use o botão
-          <span class="inline-badge">−</span> no canto ou segure a figurinha
-          por 1s.
+          Olá, <strong>{{ user?.name?.split(' ')?.[0] }}</strong>! Toque na
+          figurinha para marcar (ou somar repetida). Segure por 1 segundo
+          para reduzir.
         </p>
       </div>
     </div>
@@ -91,66 +90,53 @@
       </header>
 
       <div class="grid">
-        <div
+        <button
           *ngFor="let s of section.stickers; trackBy: trackBySticker"
-          class="sticker-wrap"
+          class="sticker"
+          [class.owned]="s.owned"
+          [class.has-dup]="s.repetidas > 0"
+          [class.special]="s.isSpecial"
+          [@flash]="pulseMap[s.id] || 0"
+          (click)="onStickerClick(s)"
+          (touchstart)="onPressStart($event, s)"
+          (touchend)="onPressEnd()"
+          (touchmove)="onPressEnd()"
+          (touchcancel)="onPressEnd()"
+          (mousedown)="onPressStart($event, s)"
+          (mouseup)="onPressEnd()"
+          (mouseleave)="onPressEnd()"
+          [title]="
+            s.owned
+              ? 'Toque p/ somar repetida. Segure 1s p/ reduzir.'
+              : 'Toque para marcar como colada.'
+          "
         >
-          <button
-            class="sticker"
-            [class.owned]="s.owned"
-            [class.has-dup]="s.repetidas > 0"
-            [class.special]="s.isSpecial"
-            [@flash]="pulseMap[s.id] || 0"
-            (click)="onStickerClick(s)"
-            (contextmenu)="onStickerRightClick($event, s)"
-            (touchstart)="onStickerTouchStart($event, s)"
-            (touchend)="onStickerTouchEnd($event, s)"
-            (touchmove)="onStickerTouchCancel()"
-            (touchcancel)="onStickerTouchCancel()"
-            [title]="
-              s.owned
-                ? 'Toque p/ adicionar repetida. Segure 1s (ou botão −) p/ reduzir.'
-                : 'Toque para marcar como colada.'
-            "
-          >
-            <div class="code">{{ s.code }}</div>
-            <div class="icon-wrap">
-              <span
-                class="material-icons status-icon"
-                *ngIf="s.owned"
-              >
-                check_circle
-              </span>
-              <span
-                class="material-icons placeholder-icon"
-                *ngIf="!s.owned"
-              >
-                sports_soccer
-              </span>
-            </div>
-            <div class="name">
-              <span *ngIf="s.team">{{ s.team }}</span>
-              <span class="muted" *ngIf="s.playerName">{{ s.playerName }}</span>
-            </div>
-            <div class="dup-badge" *ngIf="s.repetidas > 0">
-              +{{ s.repetidas }}
-            </div>
-            <div class="special-ribbon" *ngIf="s.isSpecial">
-              <span class="material-icons">star</span>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            *ngIf="s.owned"
-            class="minus-btn"
-            (click)="onMinusClick($event, s)"
-            [attr.aria-label]="'Reduzir ' + s.code"
-            title="Reduzir 1"
-          >
-            <span class="material-icons">remove</span>
-          </button>
-        </div>
+          <div class="code">{{ s.code }}</div>
+          <div class="icon-wrap">
+            <span
+              class="material-icons status-icon"
+              *ngIf="s.owned"
+            >
+              check_circle
+            </span>
+            <span
+              class="material-icons placeholder-icon"
+              *ngIf="!s.owned"
+            >
+              sports_soccer
+            </span>
+          </div>
+          <div class="name">
+            <span *ngIf="s.team">{{ s.team }}</span>
+            <span class="muted" *ngIf="s.playerName">{{ s.playerName }}</span>
+          </div>
+          <div class="dup-badge" *ngIf="s.repetidas > 0">
+            +{{ s.repetidas }}
+          </div>
+          <div class="special-ribbon" *ngIf="s.isSpecial">
+            <span class="material-icons">star</span>
+          </div>
+        </button>
       </div>
     </article>
   </div>
