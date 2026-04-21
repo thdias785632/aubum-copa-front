@@ -69,6 +69,11 @@ export class AlbumComponent implements OnInit {
   // Confete no topo quando marca nova
   showConfetti = false;
 
+  // Long-press em mobile: 600ms p/ disparar decremento
+  private readonly LONG_PRESS_MS = 600;
+  private longPressTimer: ReturnType<typeof setTimeout> | null = null;
+  private longPressTriggered = false;
+
   constructor(
     private userService: UserGateway,
     private stickerService: StickerGateway,
@@ -101,6 +106,11 @@ export class AlbumComponent implements OnInit {
 
   onStickerClick(sticker: AlbumSticker): void {
     if (!this.user) return;
+    // Se o click veio de um long-press, ja decrementamos - nao incrementa.
+    if (this.longPressTriggered) {
+      this.longPressTriggered = false;
+      return;
+    }
     const prevQuantity = sticker.quantity;
     this.stickerService.increment(this.user.id, sticker.id).subscribe({
       next: () => {
@@ -138,6 +148,42 @@ export class AlbumComponent implements OnInit {
   onStickerRightClick(event: MouseEvent, sticker: AlbumSticker): void {
     event.preventDefault();
     this.decrementSticker(sticker);
+  }
+
+  onMinusClick(event: Event, sticker: AlbumSticker): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.decrementSticker(sticker);
+  }
+
+  onStickerTouchStart(_event: TouchEvent, sticker: AlbumSticker): void {
+    if (!sticker.owned) return;
+    this.clearLongPressTimer();
+    this.longPressTriggered = false;
+    this.longPressTimer = setTimeout(() => {
+      this.longPressTriggered = true;
+      this.decrementSticker(sticker);
+    }, this.LONG_PRESS_MS);
+  }
+
+  onStickerTouchEnd(event: TouchEvent, _sticker: AlbumSticker): void {
+    this.clearLongPressTimer();
+    // Se o long-press ja disparou, impede o click sintetico (que viria a
+    // seguir) de registrar um incremento.
+    if (this.longPressTriggered) {
+      event.preventDefault();
+    }
+  }
+
+  onStickerTouchCancel(): void {
+    this.clearLongPressTimer();
+  }
+
+  private clearLongPressTimer(): void {
+    if (this.longPressTimer) {
+      clearTimeout(this.longPressTimer);
+      this.longPressTimer = null;
+    }
   }
 
   decrementSticker(sticker: AlbumSticker): void {
