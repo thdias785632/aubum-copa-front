@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { NotificationComponent } from './components/notification/notification.co
     RouterOutlet,
     NavbarComponent,
     NotificationComponent,
+    GlobalLoaderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
