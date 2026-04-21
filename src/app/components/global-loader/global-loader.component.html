@@ -1,0 +1,31 @@
+<div
+  class="global-loader"
+  *ngIf="isVisible"
+  [@fadeInOut]
+  role="alert"
+  aria-busy="true"
+  aria-live="polite"
+>
+  <div class="card" [@popIn]>
+    <div class="mascot-wrap">
+      <div class="ring"></div>
+      <div class="ring ring-2"></div>
+      <img
+        src="assets/aubum.png"
+        alt="AUbum mascote"
+        class="mascot-img"
+      />
+      <span class="paw paw-1">🐾</span>
+      <span class="paw paw-2">🐾</span>
+      <span class="paw paw-3">🐾</span>
+    </div>
+
+    <p class="message">{{ message }}</p>
+
+    <div class="dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</div>
