@@ -125,13 +125,11 @@ export class AlbumComponent implements OnInit {
 
         if (prevQuantity === 0) {
           this.triggerConfetti();
-          this.showBubble(`AU AU! ${sticker.code} colada no álbum!`);
           this.notification.showMessage(
             `Figurinha ${sticker.code} marcada no álbum!`,
             'success'
           );
         } else {
-          this.showBubble(`Repetida! (${sticker.repetidas}x)`);
           this.notification.showMessage(
             `Figurinha ${sticker.code} foi pras repetidas (${sticker.repetidas}x)`,
             'info'
@@ -216,11 +214,6 @@ export class AlbumComponent implements OnInit {
           (this.album.ownedStickers / this.album.totalStickers) * 1000
         ) / 10;
     }
-  }
-
-  showBubble(text: string): void {
-    this.mascotBubble = text;
-    setTimeout(() => (this.mascotBubble = ''), 2400);
   }
 
   triggerConfetti(): void {
