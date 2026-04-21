@@ -106,11 +106,6 @@ export class AlbumComponent implements OnInit {
 
   onStickerClick(sticker: AlbumSticker): void {
     if (!this.user) return;
-    // Se o click veio de um long-press, ja decrementamos - nao incrementa.
-    if (this.longPressTriggered) {
-      this.longPressTriggered = false;
-      return;
-    }
     const prevQuantity = sticker.quantity;
     this.stickerService.increment(this.user.id, sticker.id).subscribe({
       next: () => {
