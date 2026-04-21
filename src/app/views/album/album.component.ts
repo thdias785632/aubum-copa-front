@@ -69,10 +69,13 @@ export class AlbumComponent implements OnInit {
   // Confete no topo quando marca nova
   showConfetti = false;
 
-  // Long-press em mobile: 600ms p/ disparar decremento
-  private readonly LONG_PRESS_MS = 600;
+  // Long-press (mobile e desktop): 1000ms dispara decremento.
+  private readonly LONG_PRESS_MS = 1000;
+  // Janela curta apos um long-press onde o click sintetico do touchend deve
+  // ser ignorado. Cobre navegadores em que preventDefault nao barra o click.
+  private readonly POST_LONG_PRESS_GRACE_MS = 500;
   private longPressTimer: ReturnType<typeof setTimeout> | null = null;
-  private longPressTriggered = false;
+  private lastLongPressAt = 0;
 
   constructor(
     private userService: UserGateway,
@@ -106,6 +109,10 @@ export class AlbumComponent implements OnInit {
 
   onStickerClick(sticker: AlbumSticker): void {
     if (!this.user) return;
+    // Ignora o click sintetico que pode vir logo apos um long-press.
+    if (Date.now() - this.lastLongPressAt < this.POST_LONG_PRESS_GRACE_MS) {
+      return;
+    }
     const prevQuantity = sticker.quantity;
     this.stickerService.increment(this.user.id, sticker.id).subscribe({
       next: () => {
@@ -118,13 +125,11 @@ export class AlbumComponent implements OnInit {
 
         if (prevQuantity === 0) {
           this.triggerConfetti();
-          this.showBubble(`AU AU! ${sticker.code} colada no álbum!`);
           this.notification.showMessage(
             `Figurinha ${sticker.code} marcada no álbum!`,
             'success'
           );
         } else {
-          this.showBubble(`Repetida! (${sticker.repetidas}x)`);
           this.notification.showMessage(
             `Figurinha ${sticker.code} foi pras repetidas (${sticker.repetidas}x)`,
             'info'
@@ -140,37 +145,17 @@ export class AlbumComponent implements OnInit {
     });
   }
 
-  onStickerRightClick(event: MouseEvent, sticker: AlbumSticker): void {
-    event.preventDefault();
-    this.decrementSticker(sticker);
-  }
-
-  onMinusClick(event: Event, sticker: AlbumSticker): void {
-    event.stopPropagation();
-    event.preventDefault();
-    this.decrementSticker(sticker);
-  }
-
-  onStickerTouchStart(_event: TouchEvent, sticker: AlbumSticker): void {
+  onPressStart(_event: Event, sticker: AlbumSticker): void {
     if (!sticker.owned) return;
     this.clearLongPressTimer();
-    this.longPressTriggered = false;
     this.longPressTimer = setTimeout(() => {
-      this.longPressTriggered = true;
+      this.longPressTimer = null;
+      this.lastLongPressAt = Date.now();
       this.decrementSticker(sticker);
     }, this.LONG_PRESS_MS);
   }
 
-  onStickerTouchEnd(event: TouchEvent, _sticker: AlbumSticker): void {
-    this.clearLongPressTimer();
-    // Se o long-press ja disparou, impede o click sintetico (que viria a
-    // seguir) de registrar um incremento.
-    if (this.longPressTriggered) {
-      event.preventDefault();
-    }
-  }
-
-  onStickerTouchCancel(): void {
+  onPressEnd(): void {
     this.clearLongPressTimer();
   }
 
@@ -229,11 +214,6 @@ export class AlbumComponent implements OnInit {
           (this.album.ownedStickers / this.album.totalStickers) * 1000
         ) / 10;
     }
-  }
-
-  showBubble(text: string): void {
-    this.mascotBubble = text;
-    setTimeout(() => (this.mascotBubble = ''), 2400);
   }
 
   triggerConfetti(): void {
