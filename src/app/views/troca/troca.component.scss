@@ -91,7 +91,7 @@
 
       .material-icons {
         font-size: 20px;
-        color: var(--br-green);
+        color: var(--br-white);
       }
     }
   }
@@ -106,8 +106,8 @@
     border: none;
     border-radius: 999px;
     cursor: pointer;
-    background: var(--br-green);
-    color: var(--br-white);
+    background: var(--br-white);
+    color: var(--br-green);
     transition: background 0.15s ease, transform 0.15s ease;
 
     &:hover {
@@ -149,7 +149,7 @@
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--br-green), var(--br-blue));
+    background: var(--br-green);
     display: flex;
     align-items: center;
     justify-content: center;

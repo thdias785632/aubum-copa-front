@@ -98,12 +98,7 @@
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      var(--br-green),
-      var(--br-yellow),
-      var(--br-blue)
-    );
+    background: var(--br-green);
     background-size: 200% 100%;
     animation: aubumGradientShift 4s ease infinite;
     border-radius: 999px;
@@ -208,11 +203,13 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
   gap: 10px;
 }
 
 .sticker {
+  height: 145px;
+  width: 100px;
   position: relative;
   aspect-ratio: 3/4;
   border-radius: 14px;
@@ -239,7 +236,7 @@
   }
 
   .code {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 800;
     background: var(--br-blue);
     color: var(--br-white);
@@ -255,11 +252,11 @@
     justify-content: center;
 
     .status-icon {
-      font-size: 56px;
+      font-size: 24px;
       color: var(--br-green);
     }
     .placeholder-icon {
-      font-size: 44px;
+      font-size: 24px;
       color: var(--ink-300);
     }
   }
@@ -288,7 +285,7 @@
     background: var(--br-yellow);
     color: var(--br-blue-dark);
     font-weight: 800;
-    font-size: 12px;
+    font-size: 7px;
     padding: 3px 8px;
     border-radius: 999px;
     border: 2px solid var(--br-white);
