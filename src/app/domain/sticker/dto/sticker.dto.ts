@@ -48,3 +48,9 @@ export interface UserSticker {
   position: number;
   isSpecial: boolean;
 }
+
+export interface TrocaUser {
+  userId: string;
+  userName: string;
+  repetidasCount: number;
+}

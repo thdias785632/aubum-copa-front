@@ -98,12 +98,7 @@
 
   .progress-fill {
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      var(--br-green),
-      var(--br-yellow),
-      var(--br-blue)
-    );
+    background: var(--br-green);
     background-size: 200% 100%;
     animation: aubumGradientShift 4s ease infinite;
     border-radius: 999px;
@@ -206,13 +201,64 @@
   }
 }
 
+.team-subsection {
+  margin-bottom: 18px;
+  padding: 14px;
+  background: rgba(244, 247, 251, 0.6);
+  border-radius: 16px;
+  border: 1px solid var(--ink-300);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--br-blue-dark);
+  }
+
+  .team-count {
+    background: var(--br-blue);
+    color: var(--br-white);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 12px;
+  }
+}
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
 }
 
 .sticker {
+  width: 100%;
+  min-height: 130px;
   position: relative;
   aspect-ratio: 3/4;
   border-radius: 14px;
@@ -239,7 +285,7 @@
   }
 
   .code {
-    font-size: 12px;
+    font-size: 7px;
     font-weight: 800;
     background: var(--br-blue);
     color: var(--br-white);
@@ -255,11 +301,11 @@
     justify-content: center;
 
     .status-icon {
-      font-size: 56px;
+      font-size: 24px;
       color: var(--br-green);
     }
     .placeholder-icon {
-      font-size: 44px;
+      font-size: 24px;
       color: var(--ink-300);
     }
   }
@@ -288,7 +334,7 @@
     background: var(--br-yellow);
     color: var(--br-blue-dark);
     font-weight: 800;
-    font-size: 12px;
+    font-size: 5px;
     padding: 3px 8px;
     border-radius: 999px;
     border: 2px solid var(--br-white);

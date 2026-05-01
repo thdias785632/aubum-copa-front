@@ -55,12 +55,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     sans-serif;
   color: var(--ink-900);
-  background: linear-gradient(
-    135deg,
-    var(--br-green) 0%,
-    var(--br-yellow) 50%,
-    var(--br-blue) 100%
-  );
+  background: var(--br-green);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
 }

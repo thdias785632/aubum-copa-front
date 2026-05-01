@@ -17,6 +17,7 @@ Architecture com domain/infra/views + guards).
 - `/` - home publica (login + cadastro com mascote animado)
 - `/album` - grid interativo das figurinhas (clique = marcar, clique 2x = repetida, botao direito = reduzir)
 - `/repetidas` - lista de figurinhas em excesso
+- `/troca` - troca de figurinhas (veja repetidas de outros usuarios, filtre as que nao tem, copie a lista)
 - `/perfil` - dados do usuario, estatisticas e reset do album
 
 ## Variaveis de ambiente
