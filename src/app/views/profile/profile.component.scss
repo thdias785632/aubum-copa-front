@@ -42,9 +42,10 @@
   gap: 14px;
   padding: 16px 20px;
   border-radius: 18px;
-  background: var(--br-green);
+  background: var(--br-blue);
   color: var(--br-white);
   box-shadow: var(--shadow-sm);
+  border: 2px solid var(--br-yellow);
 
   .material-icons { font-size: 30px; color: var(--br-yellow); }
   .label { font-size: 12px; opacity: 0.85; }

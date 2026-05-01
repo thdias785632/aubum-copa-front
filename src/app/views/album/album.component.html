@@ -80,7 +80,7 @@
   <div class="sections" *ngIf="album as a">
     <article
       class="section"
-      *ngFor="let section of filteredSections(); trackBy: trackBySection"
+      *ngFor="let section of filteredSectionsWithTeams(); trackBy: trackBySection"
     >
       <header class="section-header">
         <h2 class="brand-font">{{ section.section }}</h2>
@@ -89,54 +89,63 @@
         </span>
       </header>
 
-      <div class="grid">
-        <button
-          *ngFor="let s of section.stickers; trackBy: trackBySticker"
-          class="sticker"
-          [class.owned]="s.owned"
-          [class.has-dup]="s.repetidas > 0"
-          [class.special]="s.isSpecial"
-          [@flash]="pulseMap[s.id] || 0"
-          (click)="onStickerClick(s)"
-          (touchstart)="onPressStart($event, s)"
-          (touchend)="onPressEnd()"
-          (touchmove)="onPressEnd()"
-          (touchcancel)="onPressEnd()"
-          (mousedown)="onPressStart($event, s)"
-          (mouseup)="onPressEnd()"
-          (mouseleave)="onPressEnd()"
-          [title]="
-            s.owned
-              ? 'Toque p/ somar repetida. Segure 1s p/ reduzir.'
-              : 'Toque para marcar como colada.'
-          "
-        >
-          <div class="code">{{ s.code }}</div>
-          <div class="icon-wrap">
-            <span
-              class="material-icons status-icon"
-              *ngIf="s.owned"
-            >
-              check_circle
-            </span>
-            <span
-              class="material-icons placeholder-icon"
-              *ngIf="!s.owned"
-            >
-              sports_soccer
-            </span>
-          </div>
-          <div class="name">
-            <span *ngIf="s.team">{{ s.team }}</span>
-            <span class="muted" *ngIf="s.playerName">{{ s.playerName }}</span>
-          </div>
-          <div class="dup-badge" *ngIf="s.repetidas > 0">
-            +{{ s.repetidas }}
-          </div>
-          <div class="special-ribbon" *ngIf="s.isSpecial">
-            <span class="material-icons">star</span>
-          </div>
-        </button>
+      <div
+        class="team-subsection"
+        *ngFor="let team of section.teams; trackBy: trackByTeam"
+      >
+        <header class="team-header">
+          <h3>{{ team.team }}</h3>
+          <span class="team-count">{{ team.ownedStickers }} / {{ team.totalStickers }}</span>
+        </header>
+
+        <div class="grid">
+          <button
+            *ngFor="let s of team.stickers; trackBy: trackBySticker"
+            class="sticker"
+            [class.owned]="s.owned"
+            [class.has-dup]="s.repetidas > 0"
+            [class.special]="s.isSpecial"
+            [@flash]="pulseMap[s.id] || 0"
+            (click)="onStickerClick(s)"
+            (touchstart)="onPressStart($event, s)"
+            (touchend)="onPressEnd()"
+            (touchmove)="onPressEnd()"
+            (touchcancel)="onPressEnd()"
+            (mousedown)="onPressStart($event, s)"
+            (mouseup)="onPressEnd()"
+            (mouseleave)="onPressEnd()"
+            [title]="
+              s.owned
+                ? 'Toque p/ somar repetida. Segure 1s p/ reduzir.'
+                : 'Toque para marcar como colada.'
+            "
+          >
+            <div class="code">{{ s.code }}</div>
+            <div class="icon-wrap">
+              <span
+                class="material-icons status-icon"
+                *ngIf="s.owned"
+              >
+                check_circle
+              </span>
+              <span
+                class="material-icons placeholder-icon"
+                *ngIf="!s.owned"
+              >
+                sports_soccer
+              </span>
+            </div>
+            <div class="name">
+              <span class="muted" *ngIf="s.playerName">{{ s.playerName }}</span>
+            </div>
+            <div class="dup-badge" *ngIf="s.repetidas > 0">
+              +{{ s.repetidas }}
+            </div>
+            <div class="special-ribbon" *ngIf="s.isSpecial">
+              <span class="material-icons">star</span>
+            </div>
+          </button>
+        </div>
       </div>
     </article>
   </div>

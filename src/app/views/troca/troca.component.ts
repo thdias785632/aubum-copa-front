@@ -155,16 +155,42 @@ export class TrocaComponent implements OnInit {
 
     const text = `${header}\n${lines.join('\n')}\n\nTotal: ${items.length} figurinhas`;
 
-    navigator.clipboard.writeText(text).then(
-      () => {
-        this.copied = true;
-        this.notification.showMessage('Lista copiada!', 'success');
-        setTimeout(() => (this.copied = false), 3000);
-      },
-      () => {
-        this.notification.showMessage('Erro ao copiar', 'error');
-      }
-    );
+    this.copyToClipboard(text);
+  }
+
+  private copyToClipboard(text: string): void {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(
+        () => this.onCopySuccess(),
+        () => this.fallbackCopy(text)
+      );
+    } else {
+      this.fallbackCopy(text);
+    }
+  }
+
+  private fallbackCopy(text: string): void {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      this.onCopySuccess();
+    } catch {
+      this.notification.showMessage('Erro ao copiar', 'error');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  private onCopySuccess(): void {
+    this.copied = true;
+    this.notification.showMessage('Lista copiada!', 'success');
+    setTimeout(() => (this.copied = false), 3000);
   }
 
   trackByUser(_: number, item: TrocaUser): string {

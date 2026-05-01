@@ -23,6 +23,20 @@ import {
 } from '../../domain/sticker/dto/sticker.dto';
 import { User } from '../../domain/user/dto/user.dto';
 
+interface TeamSubsection {
+  team: string;
+  totalStickers: number;
+  ownedStickers: number;
+  stickers: AlbumSticker[];
+}
+
+interface SectionWithTeams {
+  section: string;
+  totalStickers: number;
+  ownedStickers: number;
+  teams: TeamSubsection[];
+}
+
 @Component({
   selector: 'app-album',
   standalone: true,
@@ -221,9 +235,10 @@ export class AlbumComponent implements OnInit {
     setTimeout(() => (this.showConfetti = false), 1600);
   }
 
-  filteredSections(): AlbumSection[] {
+  filteredSectionsWithTeams(): SectionWithTeams[] {
     if (!this.album) return [];
     const q = this.search.trim().toLowerCase();
+
     return this.album.sections
       .map((section) => {
         let stickers = section.stickers;
@@ -239,13 +254,43 @@ export class AlbumComponent implements OnInit {
         if (this.hideOwned) {
           stickers = stickers.filter((s) => !s.owned);
         }
-        return { ...section, stickers };
+
+        const teamMap = new Map<string, AlbumSticker[]>();
+        for (const s of stickers) {
+          const teamName = s.team ?? section.section;
+          const arr = teamMap.get(teamName);
+          if (arr) {
+            arr.push(s);
+          } else {
+            teamMap.set(teamName, [s]);
+          }
+        }
+
+        const teams: TeamSubsection[] = Array.from(teamMap.entries()).map(
+          ([team, teamStickers]) => ({
+            team,
+            totalStickers: teamStickers.length,
+            ownedStickers: teamStickers.filter((s) => s.owned).length,
+            stickers: teamStickers,
+          })
+        );
+
+        return {
+          section: section.section,
+          totalStickers: section.totalStickers,
+          ownedStickers: stickers.filter((s) => s.owned).length,
+          teams,
+        };
       })
-      .filter((section) => section.stickers.length > 0);
+      .filter((section) => section.teams.length > 0);
   }
 
-  trackBySection(_: number, section: AlbumSection): string {
+  trackBySection(_: number, section: SectionWithTeams): string {
     return section.section;
+  }
+
+  trackByTeam(_: number, team: TeamSubsection): string {
+    return team.team;
   }
 
   trackBySticker(_: number, sticker: AlbumSticker): string {
