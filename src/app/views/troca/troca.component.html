@@ -1,0 +1,99 @@
+<section class="troca-page">
+  <!-- LISTA DE USUARIOS -->
+  <ng-container *ngIf="!selectedUser">
+    <header class="page-header">
+      <app-mascot size="md" [wag]="true" bubble="Bora trocar!"></app-mascot>
+      <div class="texts">
+        <h1 class="brand-font">Troca de Figurinhas</h1>
+        <p>Veja as repetidas dos outros colecionadores e monte sua lista de troca! 🔁</p>
+      </div>
+    </header>
+
+    <div class="empty" *ngIf="!isLoading && trocaUsers.length === 0">
+      <app-mascot size="lg" [wag]="true"></app-mascot>
+      <h3>Nenhum colecionador com repetidas</h3>
+      <p>Quando alguém tiver figurinhas repetidas, aparecerá aqui.</p>
+    </div>
+
+    <div class="users-grid">
+      <article
+        class="user-card"
+        *ngFor="let u of trocaUsers; trackBy: trackByUser"
+        [@listIn]
+        (click)="selectUser(u)"
+      >
+        <div class="avatar">
+          <span class="material-icons">person</span>
+        </div>
+        <div class="user-info">
+          <strong>{{ u.userName }}</strong>
+          <span class="rep-count">{{ u.repetidasCount }} repetida{{ u.repetidasCount === 1 ? '' : 's' }}</span>
+        </div>
+        <span class="material-icons arrow">chevron_right</span>
+      </article>
+    </div>
+  </ng-container>
+
+  <!-- REPETIDAS DO USUARIO SELECIONADO -->
+  <ng-container *ngIf="selectedUser">
+    <header class="page-header detail-header" [@fadeIn]>
+      <button class="back-btn" (click)="backToList()">
+        <span class="material-icons">arrow_back</span>
+        Voltar
+      </button>
+      <div class="texts">
+        <h1 class="brand-font">Repetidas de {{ selectedUser.userName }}</h1>
+        <p>{{ selectedUser.repetidasCount }} figurinha{{ selectedUser.repetidasCount === 1 ? '' : 's' }} disponíve{{ selectedUser.repetidasCount === 1 ? 'l' : 'is' }} para troca</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <label class="filter-toggle">
+        <input type="checkbox" [(ngModel)]="filterNaoTenho" />
+        <span class="toggle-label">
+          <span class="material-icons">filter_list</span>
+          Apenas as que eu não tenho
+        </span>
+      </label>
+      <button class="aubum-btn green copy-btn" (click)="copyList()">
+        <span class="material-icons">{{ copied ? 'check' : 'content_copy' }}</span>
+        {{ copied ? 'Copiada!' : 'Copiar lista' }}
+      </button>
+    </div>
+
+    <div class="empty" *ngIf="!isLoadingRepetidas && filteredRepetidas().length === 0">
+      <app-mascot size="lg" [wag]="true"></app-mascot>
+      <h3 *ngIf="filterNaoTenho">Você já tem todas!</h3>
+      <h3 *ngIf="!filterNaoTenho">Nenhuma repetida</h3>
+      <p *ngIf="filterNaoTenho">Todas as repetidas de {{ selectedUser.userName }} você já colou no álbum.</p>
+      <p *ngIf="!filterNaoTenho">{{ selectedUser.userName }} não tem figurinhas repetidas no momento.</p>
+    </div>
+
+    <div class="rep-grid">
+      <article
+        class="rep-card"
+        *ngFor="let item of filteredRepetidas(); trackBy: trackBySticker"
+        [@listIn]
+      >
+        <div class="top">
+          <span class="code">{{ item.code }}</span>
+          <span class="badge">x{{ item.quantity - 1 }}</span>
+        </div>
+        <div class="icon-wrap">
+          <span class="material-icons">sports_soccer</span>
+        </div>
+        <div class="info">
+          <strong *ngIf="item.team">{{ item.team }}</strong>
+          <span *ngIf="item.playerName">{{ item.playerName }}</span>
+          <em>{{ item.section }}</em>
+        </div>
+      </article>
+    </div>
+  </ng-container>
+
+  <app-loader
+    *ngIf="isLoading || isLoadingRepetidas"
+    [overlay]="true"
+    message="Carregando..."
+  ></app-loader>
+</section>

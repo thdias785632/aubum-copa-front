@@ -7,6 +7,7 @@ import { StickerGateway } from '../../domain/sticker/gateway/sticker.gateway';
 import {
   AlbumSummary,
   Sticker,
+  TrocaUser,
   UserSticker,
 } from '../../domain/sticker/dto/sticker.dto';
 
@@ -48,5 +49,15 @@ export class StickerService implements StickerGateway {
 
   reset(userId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/aubum/reset/${userId}`);
+  }
+
+  getTrocaUsers(): Observable<TrocaUser[]> {
+    return this.http.get<TrocaUser[]>(`${this.apiUrl}/aubum/troca/users`);
+  }
+
+  getTrocaRepetidas(userId: string): Observable<UserSticker[]> {
+    return this.http.get<UserSticker[]>(
+      `${this.apiUrl}/aubum/troca/repetidas/${userId}`
+    );
   }
 }
