@@ -76,6 +76,7 @@ export class AlbumComponent implements OnInit {
   search = '';
   mascotBubble = '';
   hideOwned = false;
+  copied = false;
 
   // Controla animacao individual por figurinha
   pulseMap: Record<string, number> = {};
@@ -295,5 +296,66 @@ export class AlbumComponent implements OnInit {
 
   trackBySticker(_: number, sticker: AlbumSticker): string {
     return sticker.id;
+  }
+
+  // Copiar na area de transferencia a mesma lista que aparece na tela no momento
+  copyList(): void {
+    const sections = this.filteredSectionsWithTeams();
+
+    if (sections.length === 0) {
+      this.notification.showMessage('Lista vazia, nada para copiar', 'error');
+      return;
+    }
+
+    const lines: string[] = [];
+
+    for (const section of sections) {
+      for (const team of section.teams) {
+        lines.push(`\n*${team.team}*\n`);
+
+        for (const sticker of team.stickers) {
+          lines.push(`  ${sticker.code}`);
+        }
+      }
+    }
+
+    const text = lines.join('\n');
+    
+    this.copyToClipboard(text);
+  }
+
+   private copyToClipboard(text: string): void {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(
+        () => this.onCopySuccess(),
+        () => this.fallbackCopy(text)
+      );
+    } else {
+      this.fallbackCopy(text);
+    }
+  }
+
+  private onCopySuccess(): void {
+    this.copied = true;
+    this.notification.showMessage('Lista copiada!', 'success');
+    setTimeout(() => (this.copied = false), 3000);
+  }
+
+  private fallbackCopy(text: string): void {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      this.onCopySuccess();
+    } catch {
+      this.notification.showMessage('Erro ao copiar', 'error');
+    }
+    document.body.removeChild(textarea);
   }
 }

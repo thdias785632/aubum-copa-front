@@ -373,3 +373,27 @@
     border-style: solid;
   }
 }
+
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    background: var(--br-yellow);
+    color: var(--br-blue-dark);
+    transition: background 0.15s ease, transform 0.15s ease;
+
+    &:hover {
+      background: var(--br-yellow-dark);
+      transform: translateY(-1px);
+    }
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }

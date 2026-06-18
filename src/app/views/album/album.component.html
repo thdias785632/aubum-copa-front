@@ -74,6 +74,10 @@
         <span class="material-icons">visibility_off</span>
         Só faltantes
       </label>
+      <button class="copy-btn" (click)="copyList()">
+        <span class="material-icons">{{ copied ? 'check' : 'content_copy' }}</span>
+        {{ copied ? 'Copiada!' : 'Copiar lista' }}
+      </button>
     </div>
   </header>
 
